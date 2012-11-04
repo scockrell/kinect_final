@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/stephanie/code/dev_stacks/kinect/topdown/src/bestfit.cpp
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+assert.h
+-
+math.h
+-
+bestfit.h
+/home/stephanie/code/dev_stacks/kinect/topdown/src/bestfit.h
+bestfit.h
+/home/stephanie/code/dev_stacks/kinect/topdown/src/bestfit.h
+stdio.h
+-
+
+/home/stephanie/code/dev_stacks/kinect/topdown/src/bestfit.h
+

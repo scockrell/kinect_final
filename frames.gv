@@ -1,0 +1,14 @@
+digraph G {
+"/base_link" -> "/camera_link"[label="Broadcaster: /calibrate_bestfit\nAverage rate: 15.206 Hz\nMost recent transform: 0.030 sec old \nBuffer length: 4.867 sec\n"];
+"/odom" -> "/base_link"[label="Broadcaster: /odom_translator\nAverage rate: 50.199 Hz\nMost recent transform: -43.251 sec old \nBuffer length: 4.881 sec\n"];
+"/camera_depth_frame" -> "/camera_depth_optical_frame"[label="Broadcaster: /camera_base_link2\nAverage rate: 10.187 Hz\nMost recent transform: -0.020 sec old \nBuffer length: 4.810 sec\n"];
+"/camera_link" -> "/camera_depth_frame"[label="Broadcaster: /camera_base_link\nAverage rate: 10.188 Hz\nMost recent transform: -0.021 sec old \nBuffer length: 4.810 sec\n"];
+"/camera_link" -> "/camera_rgb_frame"[label="Broadcaster: /camera_base_link1\nAverage rate: 10.187 Hz\nMost recent transform: -0.021 sec old \nBuffer length: 4.810 sec\n"];
+"/camera_rgb_frame" -> "/camera_rgb_optical_frame"[label="Broadcaster: /camera_base_link3\nAverage rate: 10.189 Hz\nMost recent transform: -0.023 sec old \nBuffer length: 4.809 sec\n"];
+"/base_link" -> "/base_laser1_link"[label="Broadcaster: /base_laser1_broadcaster\nAverage rate: 10.196 Hz\nMost recent transform: -43.339 sec old \nBuffer length: 4.806 sec\n"];
+"/base_link" -> "/front_sonar"[label="Broadcaster: /front_sonar_broadcaster\nAverage rate: 10.196 Hz\nMost recent transform: -43.341 sec old \nBuffer length: 4.806 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1345556085.917"[ shape=plaintext ] ;
+ }->"/odom";
+}

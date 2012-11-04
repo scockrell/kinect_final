@@ -1,0 +1,24 @@
+<launch>
+
+	<!-- launches the kinect stuff, kinect starts publishing -->
+	<include file="$(find openni_launch)/launch/openni.launch" />
+
+
+ <!-- <node name="TopDownView" pkg="topdown" type="TopDownView" output="screen"> -->
+  <node name="calibrate_bestfit" pkg="topdown" type="calibrate_bestfit" output="screen" /> 
+
+  <node name="lidar_output" pkg="topdown" type="lidar_output" output="screen" />
+
+<!--  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen"> -->
+  <node pkg="topdown" type="bk_planner" respawn="false" name="bk_planner" output="screen">
+    <rosparam file="$(find topdown)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find topdown)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find topdown)/config/costmap_local_params.yaml" command="load" />
+    <rosparam file="$(find topdown)/config/costmap_global_params.yaml" command="load" />
+    <rosparam file="$(find topdown)/config/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find topdown)/config/move_base_params.yaml" command="load" />
+  </node>
+
+
+
+</launch>
