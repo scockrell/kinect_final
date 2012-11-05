@@ -1,25 +1,24 @@
-//#include "/home/stephanie/code/dev_stacks/kinect/NITE/Include/XnVNite.h"
+/*
+FinalMap.cpp
+by Stephanie Cockrell
+Nov 5, 2012
+This program subscribes to the Kinect point cloud and the transform (published by calibrate_bestfit).
+It outputs a txt file which is the final map- classifying each point as unknown (0), level floor (1), ramp (2), bumps (3), and obstacles (4).
+*/
 
-// the following 3 things i'm adding because now i'm gonna run this in ros.  source: http://www.ros.org/wiki/ROS/Tutorials/WritingPublisherSubscriber%28c%2B%2B%29
 #include "ros/ros.h"
 #include "std_msgs/String.h"
-
 #include <sstream>
-
 #include <math.h>
 
-// for the writing to file and stuff- to test the output
+// for the writing to file
 #include <iostream>
 #include <fstream>
-
-// to do the ros msg i have this source http://www.ros.org/wiki/navigation/Tutorials/RobotSetup/Sensors
-#include </opt/ros/electric/stacks/common_msgs/sensor_msgs/msg_gen/cpp/include/sensor_msgs/LaserScan.h>
-//#include <sensor_msgs/LaserScan.h>
 
 #include <geometry_msgs/PointStamped.h>
 #include <tf/transform_listener.h>
 
-// PCL includes
+// PCL includes (point cloud)
 #include "pcl_ros/point_cloud.h"
 #include <pcl/ros/conversions.h>
 #include <pcl/point_cloud.h>
@@ -28,17 +27,14 @@
 #include <ctime>
 
 using namespace std;
-//using namespace sensor_msgs;
 
 using sensor_msgs::PointCloud2;
 
-// Shorthand for our point cloud type
-typedef pcl::PointCloud<pcl::PointXYZRGB> PointCloudXYZRGB;
 pcl::PointCloud<pcl::PointXYZ> cloud; // global variable
 
-bool savedPts=false;
+bool savedPts=false; // this is so that it only runs once- when savedPts=true then it ends
 
-double realXMin=-2;
+double realXMin=-2; // units: meters
 double realXMax=2;
 double realYMin=-3;
 double realYMax=0;
@@ -48,24 +44,13 @@ int finalYRes=finalXRes*(realYMax-realYMin)/(realXMax-realXMin);
 double xStep=(realXMax-realXMin)/finalXRes; // the length of each pixel in m
 double yStep=(realYMax-realYMin)/finalYRes;
 
-double getX(int i);
-double getY(int j);
-/*
-int[][] generateAvgMask(int i, int j);
-
-float topDownMap1[finalXRes][finalYRes]; //orig height data
-float topDownMap[finalXRes][finalYRes]; // after filling in tiny holes
-float topDownMap2[finalXRes][finalYRes]; //after avg filter
-int countMap[finalXRes][finalYRes];
-float gradientMap1[finalXRes][finalYRes];
-float gradientMap2[finalXRes][finalYRes];
-float finalMap[finalXRes][finalYRes];
-*/
 void cloudCallBack(const sensor_msgs::PointCloud2::ConstPtr& cloud_msg){
+	// subscribes to the point cloud
 	printf("in cloudCallBack\n");
 	pcl::fromROSMsg(*cloud_msg, cloud);
 }
 void processKinectData(const tf::TransformListener& listener){
+	// this method does all the processing
 	printf("in processKinectData\n");
 
 	int real_x_dim=640;
@@ -73,39 +58,30 @@ void processKinectData(const tf::TransformListener& listener){
 	int x_res=real_x_dim;
 	int y_res=real_y_dim; //clean this up- why do i have so many variables that are the same thing?	
 
-
-
 	int approxX;
 	int approxY;
 	double approxZ;
-/*
+
 	double topDownMap1[finalXRes][finalYRes]; //orig height data
 	double topDownMap[finalXRes][finalYRes]; // after filling in tiny holes
 	double topDownMap2[finalXRes][finalYRes]; //after avg filter
-	int countMap[finalXRes][finalYRes];
-	double gradientMap1[finalXRes][finalYRes];
-	double gradientMap2[finalXRes][finalYRes];
-	double finalMap[finalXRes][finalYRes];
-*/
+	int countMap[finalXRes][finalYRes]; // how many pts got put in each cell in the height map- because you need to average them
+	double gradientMap1[finalXRes][finalYRes]; // subtracting adjacent cells in topDownMap
+	double gradientMap2[finalXRes][finalYRes]; // subtracting adjacent cells in topDownMap2
+	double finalMap[finalXRes][finalYRes]; // the FINAL output!
 
-	float topDownMap1[finalXRes][finalYRes]; //orig height data
-	float topDownMap[finalXRes][finalYRes]; // after filling in tiny holes
-	float topDownMap2[finalXRes][finalYRes]; //after avg filter
-	int countMap[finalXRes][finalYRes];
-	float gradientMap1[finalXRes][finalYRes];
-	float gradientMap2[finalXRes][finalYRes];
-	float finalMap[finalXRes][finalYRes];
-
+	// you can uncomment these if you want to see the intermediate maps and stuff
+/*
 	ofstream myfile_height; 
-	myfile_height.open ("map_height.txt");
+	myfile_height.open ("map_height.txt"); 
 	ofstream myfile_gradient1; 
 	myfile_gradient1.open ("map_gradient1.txt");
 	ofstream myfile_gradient2; 
 	myfile_gradient2.open ("map_gradient2.txt");
+*/
 	ofstream myfile_final; 
 	myfile_final.open ("map_final.txt");
 
-	//we'll create a point in the base_laser frame that we'd like to transform to the base_link frame
 	geometry_msgs::PointStamped laser_point;
 	laser_point.header.frame_id = "camera_depth_frame";
 
@@ -114,13 +90,11 @@ void processKinectData(const tf::TransformListener& listener){
 	geometry_msgs::PointStamped base_point;
 
 	// start timer here
-	clock_t startTime=clock();
-/*
+	clock_t startTime=clock(); // just to see how long this process takes. about 2 seconds in all.
+
 	double unknownDist=.1;
 	double unknownGradient=-.05;
-*/
-	float unknownDist=.1;
-	float unknownGradient=-.05;
+
 	for(int i=0; i<finalXRes; i++){
 		for(int j=0; j<finalYRes; j++){
 			topDownMap1[i][j]=unknownDist;
@@ -139,19 +113,10 @@ void processKinectData(const tf::TransformListener& listener){
 			laser_point.point.y=(cloud.at(i,j)).y; 
 			laser_point.point.z=(cloud.at(i,j)).z;
 
+			// transform pt into robot's reference frame
 			try{
-				//geometry_msgs::PointStamped base_point;
 				listener.transformPoint("base_link", laser_point, base_point);
-/*
-				myfile_height << base_point.point.x << ", ";
-				myfile_height << base_point.point.y << ", ";
-				myfile_height << base_point.point.z << "\n";
-*/
-/*
-				myfile_tf2 << laser_point.point.x << ", ";
-				myfile_tf2 << laser_point.point.y << ", ";
-				myfile_tf2 << laser_point.point.z << "\n";
-*/
+
 			}
 			catch(tf::TransformException& ex){
 				ROS_ERROR("Received an exception trying to transform a point from \"camera_depth_frame\" to \"base_link\": %s", ex.what());
@@ -159,38 +124,13 @@ void processKinectData(const tf::TransformListener& listener){
 			approxX=(int)((base_point.point.x-realXMin)*finalXRes/(realXMax-realXMin));
 			approxY=(int)((base_point.point.y-realYMin)*finalYRes/(realYMax-realYMin));
 			approxZ=base_point.point.z;
-			//if((i+j)%1000==0){printf("%d %d %d\n",approxX,approxY,approxZ);}
-			if(approxX>=0 && approxX<=finalXRes && approxY>=0 && approxY<=finalYRes){
-				if(topDownMap[approxX][approxY]>approxZ){
-					topDownMap[approxX][approxY]=(countMap[approxX][approxY]*topDownMap[approxX][approxY] + approxZ)/(countMap[approxX][approxY] + 1);
+			if(approxX>=0 && approxX<finalXRes && approxY>=0 && approxY<finalYRes){
+				topDownMap[approxX][approxY]=(countMap[approxX][approxY]*topDownMap[approxX][approxY] + approxZ)/(countMap[approxX][approxY] + 1);
 				countMap[approxX][approxY]++;
-				}
 			}
 		}			
 	}
-/*
-	// now we throw the filter on it
-	int filterLength=30;
-	int filterLength_1=filterLength/2; // integer division!
-	int filterLength_2=filterLength-filterLength_1;
-	int filterCount=0;
-	double filterSum=0;
-	for (int i=0; i<finalXRes; i++){
-		for(int j=0; j<finalYRes; j++){
-			if(topDownMap1[i][j]!=unknownDist){ // only do this for pts with data!
-				filterCount=0;
-				filterSum=0;
-				for(int j1=max(0,j-filterLength_1); j1<min(finalYRes,j+filterLength_2); j1++){
-					if(topDownMap1[i][j1]!=unknownDist){
-						filterCount++;
-						filterSum+=topDownMap1[i][j1];
-					}
-				}
-				topDownMap[i][j]=filterSum/filterCount; // and there's no way filterCount=0, because (i,j) DEFINITELY had data
-			}
-		}
-	}
-*/
+
 	// now we fill in holes in the data, if they have data on all 4 sides or 2 opposite sides
 	int fillInCount1=1;
 	int fillInCount2=0;
@@ -222,14 +162,12 @@ void processKinectData(const tf::TransformListener& listener){
 				}
 			}
 		}
-		printf("fillInCount = %d %d %d\n",fillInCount1,fillInCount2,fillInCount3);
+		//printf("fillInCount = %d %d %d\n",fillInCount1,fillInCount2,fillInCount3);
 	}
-/*
+
 	double smoothM1=.02; //the number of m from each pt to the one you are averaging with
 	double smoothM2=.3;
-*/
-	float smoothM1=.02; //the number of m from each pt to the one you are averaging with
-	float smoothM2=.3;
+
 	int smoothPixels1=(int)(round(smoothM1/xStep)); // I really hope xStep and yStep are the same
 	int smoothPixels2=(int)(round(smoothM2/xStep)); 
 	if(smoothPixels1<1){
@@ -242,23 +180,15 @@ void processKinectData(const tf::TransformListener& listener){
 	int smoothPixels1_1=smoothPixels1-smoothPixels1_2;
 	int smoothPixels2_2=smoothPixels2/2; // INTEGER DIVISION!!!!!!
 	int smoothPixels2_1=smoothPixels2-smoothPixels2_2;
-	//printf("filterLength = %d\n",filterLength);
-	printf("xStep = %f yStep = %f smoothM1 = %f smoothPixels1 = %d smoothM2 = %f smoothPixels2 = %d\n",xStep, yStep,smoothM1,smoothPixels1,smoothM2,smoothPixels2);
-/*
+	//printf("xStep = %f yStep = %f smoothM1 = %f smoothPixels1 = %d smoothM2 = %f smoothPixels2 = %d\n",xStep, yStep,smoothM1,smoothPixels1,smoothM2,smoothPixels2);
+
 	double heightDiffX1, heightDiffX2;
 	double heightDiffY1, heightDiffY2;
-*/
-	float heightDiffX1, heightDiffX2;
-	float heightDiffY1, heightDiffY2;
 
-	//double thr1=.008; // separate floor from bumps
-	//double thr2=.034; // separate bumps from obstacles
-/*
-	double thr1=.75;
-	double thr2=1.8;
-*/
-	float thr1=.75;
-	float thr2=1.8;
+	// play with these thresholds if you disagree with me about what your robot can and can't run over
+	double thr1=.75; // separate floor from bumps
+	double thr2=1.8; // separate bumps from obstacles
+
 	for (int i=smoothPixels1_1; i<finalXRes-smoothPixels1_2;i++){
 		for(int j=smoothPixels1_1;j<finalYRes-smoothPixels1_2;j++){
 			if(finalMap[i][j]!=-1){ // don't do this for the pts with no data
@@ -267,11 +197,8 @@ void processKinectData(const tf::TransformListener& listener){
 					heightDiffX2=abs(topDownMap[i-smoothPixels1_1][j]-topDownMap[i][j]);
 					heightDiffY1=abs(topDownMap[i][j]-topDownMap[i][j+smoothPixels1_2]);
 					heightDiffY2=abs(topDownMap[i][j-smoothPixels1_1]-topDownMap[i][j]);
-					// perhaps add something about pts adjacent to pts with no data
 
-					//gradientMap1[i][j]=sqrt(heightDiffX2*heightDiffX2 + heightDiffY2*heightDiffY2);
 					gradientMap1[i][j]= sqrt( (heightDiffY1+heightDiffY2)*(heightDiffY1+heightDiffY2) + (heightDiffX1+heightDiffX2)*(heightDiffX1+heightDiffX2))/smoothM1;
-					//gradientMap1[i][j]= sqrt( (heightDiffY1+heightDiffY2)*(heightDiffY1+heightDiffY2) )/smoothM1;
 					if(gradientMap1[i][j]>thr2){ // obstacle
 						finalMap[i][j]=3;
 					}
@@ -285,20 +212,7 @@ void processKinectData(const tf::TransformListener& listener){
 			}
 		}
 	}
-	// perhaps right here we put something about tiny noise bits that got classified as a bump?
-/*
-	for (int i=smoothPixels2_1; i<finalXRes-smoothPixels2_2;i++){
-		for(int j=smoothPixels2_1;j<finalYRes-smoothPixels2_2;j++){
-			heightDiffX1=abs(topDownMap[i][j]-topDownMap[i+smoothPixels2_2][j]);
-			heightDiffX2=abs(topDownMap[i-smoothPixels2_1][j]-topDownMap[i][j]);
-			heightDiffY1=abs(topDownMap[i][j]-topDownMap[i][j+smoothPixels2_2]);
-			heightDiffY2=abs(topDownMap[i][j-smoothPixels2_1]-topDownMap[i][j]);
-			//gradientMap1[i][j]=sqrt(heightDiffX*heightDiffX + heightDiffY*heightDiffY)/smoothM1;
-			//gradientMap2[i][j]= sqrt( (heightDiffY1+heightDiffY2)*(heightDiffY1+heightDiffY2) + (heightDiffX1+heightDiffX2)*(heightDiffX1+heightDiffX2))/smoothM2;
-			gradientMap2[i][j]= sqrt( (heightDiffY1+heightDiffY2)*(heightDiffY1+heightDiffY2) )/smoothM2;
-		}
-	}
-*/
+
 	clock_t timeBeforeAvgMask=clock();
 	int avgMask[smoothPixels2][smoothPixels2];
 	int avgMaskCount=0;
@@ -355,7 +269,7 @@ void processKinectData(const tf::TransformListener& listener){
 							}
 						}
 						avgMaskCount+=avgMaskChanges;
-						generateAvgMask=false;
+						generateAvgMask=false; // comment out this line if you want to regenerate the mask at every point- but it's SO SLOW! It takes like 10 seconds.
 					}//end of while loop to populate avg mask
 				}
 				else{ // if you don't need to generate the entire thing
@@ -363,7 +277,7 @@ void processKinectData(const tf::TransformListener& listener){
 					jmax2=jmax1-j+smoothPixels2_1;
 					for(int i1=max(0,i-smoothPixels2_1);i1<min(finalXRes,i+smoothPixels2_2);i1++){
 						i2=i1-i+smoothPixels2_1;
-						if(avgMask[max(0,j-smoothPixels2_1)][i2]==1){ //updating avgMaskCount for removal of 1st col
+						if(avgMask[i2][max(0,j-smoothPixels2_1) -j+smoothPixels2_1]==1){ //updating avgMaskCount for removal of 1st col
 							avgMaskCount--;
 						}
 						for(int j1=max(0,j-smoothPixels2_1)+1;j1<min(finalYRes,j+smoothPixels2_2);j1++){ 
@@ -371,46 +285,52 @@ void processKinectData(const tf::TransformListener& listener){
 							j2=j1-j+smoothPixels2_1;
 							avgMask[i2][j2-1]=avgMask[i2][j2];
 						}
-						// now to figure out avgMask[i2][jmax2] (the last column)
-						if(finalMap[i1][jmax1-1]==-2 && finalMap[i1][jmax1]==-2){
-							//cell in new column and cell in adj col are both floor/ramp
-							avgMask[i2][jmax2]=avgMask[i2][jmax2-1];
-						}
-						else if(finalMap[i1][jmax1]!=-2){
-							//new cell is obstacle/bump
-							avgMask[i2][jmax2]=0;
-						}
-						else if(i1==max(0,i-smoothPixels2_1)){
-							//if it's the absolute top corner
-							avgMask[i2][jmax2]=-1;
-						}
-						else if(finalMap[i1-1][jmax1]==-2 && finalMap[i1][jmax1]==-2){
-							//if new cell and the one above are both floor/ramp
-							avgMask[i2][jmax2]=avgMask[i2-1][jmax2];
-						}
-						else if(i1==min(finalXRes,i+smoothPixels2_2)-1){
-							// if it's the one in the absolute bottom corner and we haven't figured it out yet
-							avgMask[i2][jmax2]=0;
-						}
-						else{
-							avgMask[i2][jmax2]=-1; //unknown for now
-						}
-						if(avgMask[i2][jmax2]==1){
-							avgMaskCount++;
-						}
 					}
-					for(int i1=min(finalXRes,i+smoothPixels2_2)-2;i1>=max(0,i-smoothPixels2_1);i1--){
-						i2=i1-i+smoothPixels2_1;
-						if(avgMask[i2][jmax2]==-1){
-							if(finalMap[i1+1][jmax1]==-2 && finalMap[i1][jmax1]==-2){
-								//new cell and the one below are both floor/ramp
-								avgMask[i2][jmax2]=avgMask[i2+1][jmax2];
-								if(avgMask[i2][jmax2]==1){
-									avgMaskCount++;
-								}
+					// now to figure out avgMask[i2][smoothPixels2-1] (the last column)
+					if(jmax2==smoothPixels2-1){ //if we're not going off the edge of the map
+						for(int i1=max(0,i-smoothPixels2_1);i1<min(finalXRes,i+smoothPixels2_2);i1++){
+							i2=i1-i+smoothPixels2_1;
+							if(finalMap[i1][jmax1-1]==-2 && finalMap[i1][jmax1]==-2){
+								//cell in new column and cell in adj col are both floor/ramp
+								avgMask[i2][jmax2]=avgMask[i2][jmax2-1];
+							}
+							else if(finalMap[i1][jmax1]!=-2){
+								//new cell is obstacle/bump
+								avgMask[i2][jmax2]=0;
+							}
+							else if(i1==max(0,i-smoothPixels2_1)){
+								//if it's the absolute top corner
+								avgMask[i2][jmax2]=-1;
+							}
+							else if(finalMap[i1-1][jmax1]==-2 && finalMap[i1][jmax1]==-2){
+								//if new cell and the one above are both floor/ramp
+								avgMask[i2][jmax2]=avgMask[i2-1][jmax2];
+							}
+							else if(i1==min(finalXRes,i+smoothPixels2_2)-1){
+								// if it's the one in the absolute bottom corner and we haven't figured it out yet
+								avgMask[i2][jmax2]=0;
 							}
 							else{
-								avgMask[i2][jmax2]=0;
+								avgMask[i2][jmax2]=-1; //unknown for now
+							}
+							if(avgMask[i2][jmax2]==1){
+								avgMaskCount++;
+							}
+						}
+					
+						for(int i1=min(finalXRes,i+smoothPixels2_2)-2;i1>=max(0,i-smoothPixels2_1);i1--){
+							i2=i1-i+smoothPixels2_1;
+							if(avgMask[i2][jmax2]==-1){
+								if(finalMap[i1+1][jmax1]==-2 && finalMap[i1][jmax1]==-2){
+									//new cell and the one below are both floor/ramp
+									avgMask[i2][jmax2]=avgMask[i2+1][jmax2];
+									if(avgMask[i2][jmax2]==1){
+										avgMaskCount++;
+									}
+								}
+								else{
+									avgMask[i2][jmax2]=0;
+								}
 							}
 						}
 					}
@@ -441,7 +361,6 @@ void processKinectData(const tf::TransformListener& listener){
 				heightDiffX1=abs(topDownMap2[i][j]-topDownMap2[i-1][j]);
 				heightDiffY1=abs(topDownMap2[i][j]-topDownMap2[i][j-1]);
 				gradientMap2[i][j]=sqrt(heightDiffX1*heightDiffX1 + heightDiffY1*heightDiffY1);
-				//gradientMap2[i][j]= sqrt( (heightDiffY1+heightDiffY2)*(heightDiffY1+heightDiffY2) )/smoothM2;
 				if(gradientMap2[i][j]>=thr3){
 					finalMap[i][j]=1; // ramp
 				}
@@ -456,94 +375,34 @@ void processKinectData(const tf::TransformListener& listener){
 	double calculationTime=(std::clock() - startTime)/(double)CLOCKS_PER_SEC;
 	printf("calculationTime = %f sec\n",calculationTime);
 
+	// now write the output to file
 	for(int i=0;i<finalXRes; i++){
 		for(int j=0; j<finalYRes; j++){
+/*
 			myfile_height << topDownMap[i][j] << ", " ;
 			myfile_gradient1 << gradientMap1[i][j] << ", " ;
 			myfile_gradient2 << gradientMap2[i][j] << ", " ;
+*/
 			myfile_final << finalMap[i][j] << ", " ;
 		}
+/*
 		myfile_height << "\n" ;
 		myfile_gradient1 << "\n" ;
 		myfile_gradient2 << "\n" ;
+*/
 		myfile_final << "\n" ;
 	}
 
+/*
 	myfile_height.close();
 	myfile_gradient1.close();
 	myfile_gradient2.close();
+*/
 	myfile_final.close();
 
-	savedPts=true;
+	savedPts=true; // so it only loops until this method executes once
 
-}
-double getX(int i){
-	//gets the x dimension, in mm, for pixel (i,j)
-	return i*(realXMax-realXMin)/finalXRes + realXMin;
-}
-double getY(int j){
-	//gets the y dimension, in mm, for pixel (i,j)
-	return j*(realYMax-realYMin)/finalYRes + realYMin;
-}
-/*
-int[][] generateAvgMask(int i, int j){
-	int smoothPixels2=30;
-	int avgMask[smoothPixels2][smoothPixels2];
-
-	int avgMaskCount=0;
-	int avgMaskChanges=0;
-	int i2,j2;
-
-	for(int i1=0;i1<smoothPixels2;i1++){
-		for(int j1=0;j1<smoothPixels2;j1++){ // initialize the avg mask
-			avgMask[i1][j1]=0;
-		}
-	}
-	avgMask[smoothPixels2_1][smoothPixels2_1]=1; // initialize so the pt in the middle is 1
-	avgMaskCount=1;
-	avgMaskChanges=1;
-
-	// okay now i am going to populate the averaging mask- expand from the center
-	while(avgMaskChanges>0){
-		avgMaskChanges=0;
-		for(int i1=max(0,i-smoothPixels2_1);i1<min(finalXRes,i+smoothPixels2_2);i1++){
-			for(int j1=max(0,j-smoothPixels2_1);j1<min(finalYRes,j+smoothPixels2_2);j1++){ 
-				i2=i1-i+smoothPixels2_1;
-				j2=j1-j+smoothPixels2_1;
-				if(avgMask[i2][j2]==1){ // now set its 4 (ish) neighbors to 1
-					if(i2>=1){
-						if(avgMask[i2-1][j2]==0 && finalMap[i1-1][j1]==-2){
-							avgMask[i2-1][j2]=1;
-							avgMaskChanges++;
-						}
-					}
-					if(i2<=smoothPixels2 - 2){
-						if(avgMask[i2+1][j2]==0 && finalMap[i1+1][j1]==-2){
-							avgMask[i2+1][j2]=1;
-							avgMaskChanges++;
-						}
-					}
-					if(j2>=1){
-						if(avgMask[i2][j2-1]==0 && finalMap[i1][j1-1]==-2){
-							avgMask[i2][j2-1]=1;
-							avgMaskChanges++;
-						}
-					}
-					if(j2<=smoothPixels2 - 2){
-						if(avgMask[i2][j2+1]==0 && finalMap[i1][j1+1]==-2){
-							avgMask[i2][j2+1]=1;
-							avgMaskChanges++;
-						}
-					}
-				}
-			}
-		}
-		avgMaskCount+=avgMaskChanges;
-	}//end of while loop to populate avg mask
-
-	return avgMask;
-}
-*/
+} 
 int main(int argc, char** argv){
   ros::init(argc, argv, "robot_tf_listener");
   ros::NodeHandle n;

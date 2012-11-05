@@ -3,8 +3,6 @@
 
 CMakeFiles/calibrate_bestfit.dir/src/CalibrateBestFit.o
  /home/stephanie/code/dev_stacks/kinect/topdown/src/CalibrateBestFit.cpp
- /home/stephanie/code/dev_stacks/kinect/topdown/src/bestfit.h
- /home/stephanie/code/dev_stacks/kinect/topdown/src/bestfit2.h
  /opt/ros/electric/stacks/bullet/include/LinearMath/btMatrix3x3.h
  /opt/ros/electric/stacks/bullet/include/LinearMath/btMinMax.h
  /opt/ros/electric/stacks/bullet/include/LinearMath/btQuadWord.h
@@ -25,7 +23,6 @@ CMakeFiles/calibrate_bestfit.dir/src/CalibrateBestFit.o
  /opt/ros/electric/stacks/common_msgs/geometry_msgs/msg_gen/cpp/include/geometry_msgs/Vector3.h
  /opt/ros/electric/stacks/common_msgs/geometry_msgs/msg_gen/cpp/include/geometry_msgs/Vector3Stamped.h
  /opt/ros/electric/stacks/common_msgs/sensor_msgs/msg_gen/cpp/include/sensor_msgs/Image.h
- /opt/ros/electric/stacks/common_msgs/sensor_msgs/msg_gen/cpp/include/sensor_msgs/LaserScan.h
  /opt/ros/electric/stacks/common_msgs/sensor_msgs/msg_gen/cpp/include/sensor_msgs/PointCloud2.h
  /opt/ros/electric/stacks/common_msgs/sensor_msgs/msg_gen/cpp/include/sensor_msgs/PointField.h
  /opt/ros/electric/stacks/geometry/tf/include/tf/exceptions.h
@@ -97,15 +94,6 @@ CMakeFiles/calibrate_bestfit.dir/src/CalibrateBestFit.o
  /opt/ros/electric/stacks/ros_comm/utilities/cpp_common/include/ros/macros.h
  /opt/ros/electric/stacks/ros_comm/utilities/cpp_common/include/ros/platform.h
  /opt/ros/electric/stacks/ros_comm/utilities/cpp_common/include/ros/types.h
- /opt/ros/electric/stacks/ros_comm/utilities/message_filters/include/message_filters/connection.h
- /opt/ros/electric/stacks/ros_comm/utilities/message_filters/include/message_filters/null_types.h
- /opt/ros/electric/stacks/ros_comm/utilities/message_filters/include/message_filters/signal1.h
- /opt/ros/electric/stacks/ros_comm/utilities/message_filters/include/message_filters/signal9.h
- /opt/ros/electric/stacks/ros_comm/utilities/message_filters/include/message_filters/simple_filter.h
- /opt/ros/electric/stacks/ros_comm/utilities/message_filters/include/message_filters/subscriber.h
- /opt/ros/electric/stacks/ros_comm/utilities/message_filters/include/message_filters/sync_policies/approximate_time.h
- /opt/ros/electric/stacks/ros_comm/utilities/message_filters/include/message_filters/sync_policies/exact_time.h
- /opt/ros/electric/stacks/ros_comm/utilities/message_filters/include/message_filters/synchronizer.h
  /opt/ros/electric/stacks/ros_comm/utilities/rostime/include/ros/duration.h
  /opt/ros/electric/stacks/ros_comm/utilities/rostime/include/ros/rate.h
  /opt/ros/electric/stacks/ros_comm/utilities/rostime/include/ros/rostime_decl.h

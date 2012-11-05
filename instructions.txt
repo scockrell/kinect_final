@@ -1,0 +1,25 @@
+Instructions to run the Kinect code that classifies areas of the floor according to drivability
+by Stephanie Cockrell
+Nov 5, 2012
+
+In one terminal, run this:
+	roslaunch openni_launch openni.launch
+(By the way, it's necessary to have the openni package)
+This will take the data streams from the Kinect and publish them as ros topics.
+To see the ros topics, you can use this command:
+	rostopic list
+
+Next, if you want to check what the Kinect is looking at (optional):
+(do this in a new terminal)
+	rosrun image_view image_view image:=/camera/rgb/image_color
+Or, to view the depth map instead of RGB:
+	rosrun image_view image_view image:=/camera/depth/image_rect
+
+Next, calibrate the Kinect. Make sure the field of view consists mostly of level floor, and run this:
+	rosrun topdown calibrate_bestfit
+After it calculates the transform, it will just spin by itself over and over, constantly publishing that same transform.
+
+Now, to get the map that shows what areas are what:
+In a new terminal, run this:
+	rosrun topdown finalMap
+After it's done, it will output a txt file called finalMap.txt. I like to view this in Matlab. It classifies everything as unknown (0), level floor (1), ramps (2), bumps (3), and obstacles (4).

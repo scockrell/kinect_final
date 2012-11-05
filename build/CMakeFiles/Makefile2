@@ -174,48 +174,13 @@ clean: CMakeFiles/ROSBUILD_gensrv_lisp.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/TopDownView.dir
-
-# All Build rule for target.
-CMakeFiles/TopDownView.dir/all: CMakeFiles/rosbuild_precompile.dir/all
-	$(MAKE) -f CMakeFiles/TopDownView.dir/build.make CMakeFiles/TopDownView.dir/depend
-	$(MAKE) -f CMakeFiles/TopDownView.dir/build.make CMakeFiles/TopDownView.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles  1
-	@echo "Built target TopDownView"
-.PHONY : CMakeFiles/TopDownView.dir/all
-
-# Include target in all.
-all: CMakeFiles/TopDownView.dir/all
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/TopDownView.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/TopDownView.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 0
-.PHONY : CMakeFiles/TopDownView.dir/rule
-
-# Convenience name for target.
-TopDownView: CMakeFiles/TopDownView.dir/rule
-.PHONY : TopDownView
-
-# clean rule for target.
-CMakeFiles/TopDownView.dir/clean:
-	$(MAKE) -f CMakeFiles/TopDownView.dir/build.make CMakeFiles/TopDownView.dir/clean
-.PHONY : CMakeFiles/TopDownView.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/TopDownView.dir/clean
-.PHONY : clean
-
-#=============================================================================
 # Target rules for target CMakeFiles/bestfit.dir
 
 # All Build rule for target.
 CMakeFiles/bestfit.dir/all: CMakeFiles/rosbuild_precompile.dir/all
 	$(MAKE) -f CMakeFiles/bestfit.dir/build.make CMakeFiles/bestfit.dir/depend
 	$(MAKE) -f CMakeFiles/bestfit.dir/build.make CMakeFiles/bestfit.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles  2
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles  1
 	@echo "Built target bestfit"
 .PHONY : CMakeFiles/bestfit.dir/all
 
@@ -244,83 +209,13 @@ clean: CMakeFiles/bestfit.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/bk_planner.dir
-
-# All Build rule for target.
-CMakeFiles/bk_planner.dir/all: CMakeFiles/rosbuild_precompile.dir/all
-	$(MAKE) -f CMakeFiles/bk_planner.dir/build.make CMakeFiles/bk_planner.dir/depend
-	$(MAKE) -f CMakeFiles/bk_planner.dir/build.make CMakeFiles/bk_planner.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles  3
-	@echo "Built target bk_planner"
-.PHONY : CMakeFiles/bk_planner.dir/all
-
-# Include target in all.
-all: CMakeFiles/bk_planner.dir/all
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/bk_planner.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/bk_planner.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 0
-.PHONY : CMakeFiles/bk_planner.dir/rule
-
-# Convenience name for target.
-bk_planner: CMakeFiles/bk_planner.dir/rule
-.PHONY : bk_planner
-
-# clean rule for target.
-CMakeFiles/bk_planner.dir/clean:
-	$(MAKE) -f CMakeFiles/bk_planner.dir/build.make CMakeFiles/bk_planner.dir/clean
-.PHONY : CMakeFiles/bk_planner.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/bk_planner.dir/clean
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/calibrate.dir
-
-# All Build rule for target.
-CMakeFiles/calibrate.dir/all: CMakeFiles/rosbuild_precompile.dir/all
-	$(MAKE) -f CMakeFiles/calibrate.dir/build.make CMakeFiles/calibrate.dir/depend
-	$(MAKE) -f CMakeFiles/calibrate.dir/build.make CMakeFiles/calibrate.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles  4
-	@echo "Built target calibrate"
-.PHONY : CMakeFiles/calibrate.dir/all
-
-# Include target in all.
-all: CMakeFiles/calibrate.dir/all
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/calibrate.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/calibrate.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 0
-.PHONY : CMakeFiles/calibrate.dir/rule
-
-# Convenience name for target.
-calibrate: CMakeFiles/calibrate.dir/rule
-.PHONY : calibrate
-
-# clean rule for target.
-CMakeFiles/calibrate.dir/clean:
-	$(MAKE) -f CMakeFiles/calibrate.dir/build.make CMakeFiles/calibrate.dir/clean
-.PHONY : CMakeFiles/calibrate.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/calibrate.dir/clean
-.PHONY : clean
-
-#=============================================================================
 # Target rules for target CMakeFiles/calibrate_bestfit.dir
 
 # All Build rule for target.
 CMakeFiles/calibrate_bestfit.dir/all: CMakeFiles/rosbuild_precompile.dir/all
 	$(MAKE) -f CMakeFiles/calibrate_bestfit.dir/build.make CMakeFiles/calibrate_bestfit.dir/depend
 	$(MAKE) -f CMakeFiles/calibrate_bestfit.dir/build.make CMakeFiles/calibrate_bestfit.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles  5
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles  2
 	@echo "Built target calibrate_bestfit"
 .PHONY : CMakeFiles/calibrate_bestfit.dir/all
 
@@ -386,7 +281,7 @@ clean: CMakeFiles/clean-test-results.dir/clean
 CMakeFiles/finalMap.dir/all: CMakeFiles/rosbuild_precompile.dir/all
 	$(MAKE) -f CMakeFiles/finalMap.dir/build.make CMakeFiles/finalMap.dir/depend
 	$(MAKE) -f CMakeFiles/finalMap.dir/build.make CMakeFiles/finalMap.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles  6
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles  3
 	@echo "Built target finalMap"
 .PHONY : CMakeFiles/finalMap.dir/all
 
@@ -412,111 +307,6 @@ CMakeFiles/finalMap.dir/clean:
 
 # clean rule for target.
 clean: CMakeFiles/finalMap.dir/clean
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/finalMapBoth.dir
-
-# All Build rule for target.
-CMakeFiles/finalMapBoth.dir/all: CMakeFiles/rosbuild_precompile.dir/all
-	$(MAKE) -f CMakeFiles/finalMapBoth.dir/build.make CMakeFiles/finalMapBoth.dir/depend
-	$(MAKE) -f CMakeFiles/finalMapBoth.dir/build.make CMakeFiles/finalMapBoth.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles  7
-	@echo "Built target finalMapBoth"
-.PHONY : CMakeFiles/finalMapBoth.dir/all
-
-# Include target in all.
-all: CMakeFiles/finalMapBoth.dir/all
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/finalMapBoth.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/finalMapBoth.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 0
-.PHONY : CMakeFiles/finalMapBoth.dir/rule
-
-# Convenience name for target.
-finalMapBoth: CMakeFiles/finalMapBoth.dir/rule
-.PHONY : finalMapBoth
-
-# clean rule for target.
-CMakeFiles/finalMapBoth.dir/clean:
-	$(MAKE) -f CMakeFiles/finalMapBoth.dir/build.make CMakeFiles/finalMapBoth.dir/clean
-.PHONY : CMakeFiles/finalMapBoth.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/finalMapBoth.dir/clean
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/lidar_output.dir
-
-# All Build rule for target.
-CMakeFiles/lidar_output.dir/all: CMakeFiles/rosbuild_precompile.dir/all
-	$(MAKE) -f CMakeFiles/lidar_output.dir/build.make CMakeFiles/lidar_output.dir/depend
-	$(MAKE) -f CMakeFiles/lidar_output.dir/build.make CMakeFiles/lidar_output.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles  8
-	@echo "Built target lidar_output"
-.PHONY : CMakeFiles/lidar_output.dir/all
-
-# Include target in all.
-all: CMakeFiles/lidar_output.dir/all
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/lidar_output.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/lidar_output.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 0
-.PHONY : CMakeFiles/lidar_output.dir/rule
-
-# Convenience name for target.
-lidar_output: CMakeFiles/lidar_output.dir/rule
-.PHONY : lidar_output
-
-# clean rule for target.
-CMakeFiles/lidar_output.dir/clean:
-	$(MAKE) -f CMakeFiles/lidar_output.dir/build.make CMakeFiles/lidar_output.dir/clean
-.PHONY : CMakeFiles/lidar_output.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/lidar_output.dir/clean
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/lidar_output2.dir
-
-# All Build rule for target.
-CMakeFiles/lidar_output2.dir/all: CMakeFiles/rosbuild_precompile.dir/all
-	$(MAKE) -f CMakeFiles/lidar_output2.dir/build.make CMakeFiles/lidar_output2.dir/depend
-	$(MAKE) -f CMakeFiles/lidar_output2.dir/build.make CMakeFiles/lidar_output2.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles  9
-	@echo "Built target lidar_output2"
-.PHONY : CMakeFiles/lidar_output2.dir/all
-
-# Include target in all.
-all: CMakeFiles/lidar_output2.dir/all
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/lidar_output2.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/lidar_output2.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 0
-.PHONY : CMakeFiles/lidar_output2.dir/rule
-
-# Convenience name for target.
-lidar_output2: CMakeFiles/lidar_output2.dir/rule
-.PHONY : lidar_output2
-
-# clean rule for target.
-CMakeFiles/lidar_output2.dir/clean:
-	$(MAKE) -f CMakeFiles/lidar_output2.dir/build.make CMakeFiles/lidar_output2.dir/clean
-.PHONY : CMakeFiles/lidar_output2.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/lidar_output2.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -829,111 +619,6 @@ CMakeFiles/tests.dir/clean:
 
 # clean rule for target.
 clean: CMakeFiles/tests.dir/clean
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/tf_listener.dir
-
-# All Build rule for target.
-CMakeFiles/tf_listener.dir/all: CMakeFiles/rosbuild_precompile.dir/all
-	$(MAKE) -f CMakeFiles/tf_listener.dir/build.make CMakeFiles/tf_listener.dir/depend
-	$(MAKE) -f CMakeFiles/tf_listener.dir/build.make CMakeFiles/tf_listener.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles  10
-	@echo "Built target tf_listener"
-.PHONY : CMakeFiles/tf_listener.dir/all
-
-# Include target in all.
-all: CMakeFiles/tf_listener.dir/all
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/tf_listener.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/tf_listener.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 0
-.PHONY : CMakeFiles/tf_listener.dir/rule
-
-# Convenience name for target.
-tf_listener: CMakeFiles/tf_listener.dir/rule
-.PHONY : tf_listener
-
-# clean rule for target.
-CMakeFiles/tf_listener.dir/clean:
-	$(MAKE) -f CMakeFiles/tf_listener.dir/build.make CMakeFiles/tf_listener.dir/clean
-.PHONY : CMakeFiles/tf_listener.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/tf_listener.dir/clean
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/tf_listener2.dir
-
-# All Build rule for target.
-CMakeFiles/tf_listener2.dir/all: CMakeFiles/rosbuild_precompile.dir/all
-	$(MAKE) -f CMakeFiles/tf_listener2.dir/build.make CMakeFiles/tf_listener2.dir/depend
-	$(MAKE) -f CMakeFiles/tf_listener2.dir/build.make CMakeFiles/tf_listener2.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles  11
-	@echo "Built target tf_listener2"
-.PHONY : CMakeFiles/tf_listener2.dir/all
-
-# Include target in all.
-all: CMakeFiles/tf_listener2.dir/all
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/tf_listener2.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/tf_listener2.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 0
-.PHONY : CMakeFiles/tf_listener2.dir/rule
-
-# Convenience name for target.
-tf_listener2: CMakeFiles/tf_listener2.dir/rule
-.PHONY : tf_listener2
-
-# clean rule for target.
-CMakeFiles/tf_listener2.dir/clean:
-	$(MAKE) -f CMakeFiles/tf_listener2.dir/build.make CMakeFiles/tf_listener2.dir/clean
-.PHONY : CMakeFiles/tf_listener2.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/tf_listener2.dir/clean
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/tf_listener3.dir
-
-# All Build rule for target.
-CMakeFiles/tf_listener3.dir/all: CMakeFiles/rosbuild_precompile.dir/all
-	$(MAKE) -f CMakeFiles/tf_listener3.dir/build.make CMakeFiles/tf_listener3.dir/depend
-	$(MAKE) -f CMakeFiles/tf_listener3.dir/build.make CMakeFiles/tf_listener3.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles  12
-	@echo "Built target tf_listener3"
-.PHONY : CMakeFiles/tf_listener3.dir/all
-
-# Include target in all.
-all: CMakeFiles/tf_listener3.dir/all
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/tf_listener3.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/tf_listener3.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stephanie/code/dev_stacks/kinect/topdown/build/CMakeFiles 0
-.PHONY : CMakeFiles/tf_listener3.dir/rule
-
-# Convenience name for target.
-tf_listener3: CMakeFiles/tf_listener3.dir/rule
-.PHONY : tf_listener3
-
-# clean rule for target.
-CMakeFiles/tf_listener3.dir/clean:
-	$(MAKE) -f CMakeFiles/tf_listener3.dir/build.make CMakeFiles/tf_listener3.dir/clean
-.PHONY : CMakeFiles/tf_listener3.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/tf_listener3.dir/clean
 .PHONY : clean
 
 #=============================================================================
