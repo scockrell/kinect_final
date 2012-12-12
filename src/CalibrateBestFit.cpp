@@ -75,9 +75,14 @@ void allCB(const sensor_msgs::PointCloud2::ConstPtr& cloud_msg){
 	double calib_y_end = y_res*1;
 
 	int angleBinsSum=0;
+/*
 	double angleBinsMin=0;
 	double angleBinsMax= 89;
 	int angleBinsCount=100;
+*/
+	double angleBinsMin=.35; //these are for SLOPES now instead of angles
+	double angleBinsMax= 2.75;
+	int angleBinsCount=96;
 	int tempBinIndex;
 	int wonkyCount;
 	int noDataCount;
@@ -92,7 +97,16 @@ void allCB(const sensor_msgs::PointCloud2::ConstPtr& cloud_msg){
 	wonkyCount=0;
 	noDataCount=0;
 
+	ofstream myfile_allpts; 
+	myfile_allpts.open ("allpts.txt");
+
 	for(int i=0; i<x_res; i++){ 
+		for(int j=0; j<y_res; j++){
+			// write to file
+			myfile_allpts << (cloud.at(i,j)).x << ", ";
+			myfile_allpts << (cloud.at(i,j)).y << ", ";
+			myfile_allpts << (cloud.at(i,j)).z << "\n";
+		}
 	// this loop calculates an angle at each pt and puts all the angles in bins
 		minDist=1000000;
 		for(int i2=0; i2<smoothConstant; i2++){
@@ -111,10 +125,13 @@ void allCB(const sensor_msgs::PointCloud2::ConstPtr& cloud_msg){
 			approxY=(cloud.at(i,j)).y;
 			approxZ=(cloud.at(i,j)).z;
 
+			tempAngle=(yArray[0]-approxY)/(approxZ-zArray[0]);
+/*
 			tempAngle=atan2(yArray[0]-approxY,approxZ-zArray[0])*180.0/3.14159;
 			if(tempAngle<0){
 				tempAngle=tempAngle+180;
 			}
+*/
 			tempBinIndex=(int)(floor((tempAngle-angleBinsMin)/(angleBinsMax-angleBinsMin) * angleBinsCount));
 
 			if(approxY==0 || yArray[0]==0){
@@ -144,9 +161,12 @@ void allCB(const sensor_msgs::PointCloud2::ConstPtr& cloud_msg){
 
 	}
 
+	myfile_allpts.close();
+
 	angleBinsSum=0;
 	for(int i=0;i<angleBinsCount;i++){
 		angleBinsSum+=angleBins[i];
+		printf("%f %d %f\n",i*(angleBinsMax-angleBinsMin)/angleBinsCount + angleBinsMin,angleBins[i],binAvgs[i]);
 	}
 	printf("angleBinsSum = %d\n%d x %d = %d\nwonkyCount = %d\nnoDataCount = %d\n",angleBinsSum,x_res,y_res,x_res*y_res,wonkyCount, noDataCount);
 
@@ -162,10 +182,14 @@ void allCB(const sensor_msgs::PointCloud2::ConstPtr& cloud_msg){
 		}
 		double finalAngle;
 		if(maxBinIndex>0 && maxBinIndex<angleBinsCount-1){
+			finalAngle=atan( (binAvgs[maxBinIndex-1]*angleBins[maxBinIndex-1] + binAvgs[maxBinIndex]*angleBins[maxBinIndex] + binAvgs[maxBinIndex+1]*angleBins[maxBinIndex+1])/(angleBins[maxBinIndex-1]+angleBins[maxBinIndex]+angleBins[maxBinIndex+1]) )*180.0/3.14159;
+/*
 			finalAngle=(binAvgs[maxBinIndex-1]*angleBins[maxBinIndex-1] + binAvgs[maxBinIndex]*angleBins[maxBinIndex] + binAvgs[maxBinIndex+1]*angleBins[maxBinIndex+1])/(angleBins[maxBinIndex-1]+angleBins[maxBinIndex]+angleBins[maxBinIndex+1]);
+*/
 		}
 		else{ // screw it
-			finalAngle=binAvgs[maxBinIndex];
+			//finalAngle=binAvgs[maxBinIndex];
+			finalAngle=atan( binAvgs[maxBinIndex] )*180.0/3.14159;
 		}
 
 		// okay now rotate everything to get heights, put in bins, etc, find the height of kinect
@@ -247,6 +271,9 @@ void allCB(const sensor_msgs::PointCloud2::ConstPtr& cloud_msg){
 		myfile_reject.open ("rejectpts.txt");
 */
 
+		ofstream myfile_planefit; 
+		myfile_planefit.open ("planefitpts.txt");
+
 		printf("floorCount = %d\n",floorCount);
 		float* planeFitData=new float[floorCount*3];
 		int planeFitCounter=0;
@@ -264,6 +291,10 @@ void allCB(const sensor_msgs::PointCloud2::ConstPtr& cloud_msg){
 					planeFitCounter++;
 					planeFitData[planeFitCounter]=(cloud.at(i,j)).z;
 					planeFitCounter++;
+
+					myfile_planefit << (cloud.at(i,j)).x << ", ";
+					myfile_planefit << (cloud.at(i,j)).y << ", ";
+					myfile_planefit << (cloud.at(i,j)).z << "\n";
 				}
 				else{
 	/*
@@ -286,6 +317,8 @@ void allCB(const sensor_msgs::PointCloud2::ConstPtr& cloud_msg){
 			}		
 		}
 		printf("planeFitCounter = %d floorCount*3 = %d FINAL\n",planeFitCounter,floorCount*3);
+
+		myfile_planefit.close();
 /*
 		myfile_planefit.close();
 		myfile_reject.close();

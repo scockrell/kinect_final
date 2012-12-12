@@ -32,6 +32,26 @@ pcl/point_cloud.h
 pcl/point_types.h
 -
 
+/home/stephanie/code/dev_stacks/kinect/topdown/src/bestfit.h
+
+/home/stephanie/code/dev_stacks/kinect/topdown/src/bestfit2.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+assert.h
+-
+math.h
+-
+bestfit.h
+/home/stephanie/code/dev_stacks/kinect/topdown/src/bestfit.h
+bestfit.h
+/home/stephanie/code/dev_stacks/kinect/topdown/src/bestfit.h
+stdio.h
+-
+
 /opt/ros/electric/stacks/bullet/include/LinearMath/btMatrix3x3.h
 btVector3.h
 /opt/ros/electric/stacks/bullet/include/LinearMath/btVector3.h

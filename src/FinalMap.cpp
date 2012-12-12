@@ -62,7 +62,7 @@ void processKinectData(const tf::TransformListener& listener){
 	int approxY;
 	double approxZ;
 
-	double topDownMap1[finalXRes][finalYRes]; //orig height data
+	//double topDownMap1[finalXRes][finalYRes]; //orig height data
 	double topDownMap[finalXRes][finalYRes]; // after filling in tiny holes
 	double topDownMap2[finalXRes][finalYRes]; //after avg filter
 	int countMap[finalXRes][finalYRes]; // how many pts got put in each cell in the height map- because you need to average them
@@ -74,6 +74,10 @@ void processKinectData(const tf::TransformListener& listener){
 /*
 	ofstream myfile_height; 
 	myfile_height.open ("map_height.txt"); 
+	ofstream myfile_heightRaw; 
+	myfile_heightRaw.open ("map_height_raw.txt"); 
+*/
+/*
 	ofstream myfile_gradient1; 
 	myfile_gradient1.open ("map_gradient1.txt");
 	ofstream myfile_gradient2; 
@@ -97,7 +101,7 @@ void processKinectData(const tf::TransformListener& listener){
 
 	for(int i=0; i<finalXRes; i++){
 		for(int j=0; j<finalYRes; j++){
-			topDownMap1[i][j]=unknownDist;
+		//	topDownMap1[i][j]=unknownDist;
 			topDownMap[i][j]=unknownDist;
 			topDownMap2[i][j]=unknownDist;
 			countMap[i][j]=0;
@@ -107,6 +111,7 @@ void processKinectData(const tf::TransformListener& listener){
 		}
 	}
 
+	// this for loop, with the transform, takes 1.5 seconds to run. so slow...
 	for(int i=0; i<x_res; i++){ 
 		for(int j=0; j<y_res; j++){
 			laser_point.point.x=(cloud.at(i,j)).x; 
@@ -130,7 +135,15 @@ void processKinectData(const tf::TransformListener& listener){
 			}
 		}			
 	}
-
+/*
+	//outputting the original height map, before fill ins
+	for(int i=0;i<finalXRes; i++){
+		for(int j=0; j<finalYRes; j++){
+			myfile_heightRaw << topDownMap[i][j] << ", " ;
+		}
+		myfile_heightRaw << "\n" ;
+	}
+*/
 	// now we fill in holes in the data, if they have data on all 4 sides or 2 opposite sides
 	int fillInCount1=1;
 	int fillInCount2=0;
@@ -164,6 +177,8 @@ void processKinectData(const tf::TransformListener& listener){
 		}
 		//printf("fillInCount = %d %d %d\n",fillInCount1,fillInCount2,fillInCount3);
 	}
+	//double fillInTime=(std::clock() - timeBeforeFillIn)/(double)CLOCKS_PER_SEC;
+	//printf("fillInTime = %f sec\n",fillInTime);
 
 	double smoothM1=.02; //the number of m from each pt to the one you are averaging with
 	double smoothM2=.3;
@@ -213,7 +228,6 @@ void processKinectData(const tf::TransformListener& listener){
 		}
 	}
 
-	clock_t timeBeforeAvgMask=clock();
 	int avgMask[smoothPixels2][smoothPixels2];
 	int avgMaskCount=0;
 	int avgMaskChanges=0;
@@ -350,8 +364,8 @@ void processKinectData(const tf::TransformListener& listener){
 			}
 		}
 	}
-	double avgMaskTime=(std::clock() - timeBeforeAvgMask)/(double)CLOCKS_PER_SEC;
-	printf("avgMaskTime = %f sec\n",avgMaskTime);
+	//double avgMaskTime=(std::clock() - timeBeforeAvgMask)/(double)CLOCKS_PER_SEC;
+	//printf("avgMaskTime = %f sec\n",avgMaskTime);
 
 	double thr3=.000425;
 	// now subtract to find the difference between floor and ramp
@@ -370,31 +384,36 @@ void processKinectData(const tf::TransformListener& listener){
 			}
 		}
 	}
-
+	clock_t endTime=clock()-startTime;
 	// end timer here
 	double calculationTime=(std::clock() - startTime)/(double)CLOCKS_PER_SEC;
 	printf("calculationTime = %f sec\n",calculationTime);
 
+
 	// now write the output to file
 	for(int i=0;i<finalXRes; i++){
 		for(int j=0; j<finalYRes; j++){
+
+//			myfile_height << topDownMap[i][j] << ", " ;
 /*
-			myfile_height << topDownMap[i][j] << ", " ;
 			myfile_gradient1 << gradientMap1[i][j] << ", " ;
 			myfile_gradient2 << gradientMap2[i][j] << ", " ;
 */
 			myfile_final << finalMap[i][j] << ", " ;
 		}
+
+//		myfile_height << "\n" ;
 /*
-		myfile_height << "\n" ;
 		myfile_gradient1 << "\n" ;
 		myfile_gradient2 << "\n" ;
 */
 		myfile_final << "\n" ;
 	}
 
+
+//	myfile_height.close();
+//	myfile_heightRaw.close();
 /*
-	myfile_height.close();
 	myfile_gradient1.close();
 	myfile_gradient2.close();
 */
